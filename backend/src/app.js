@@ -15,7 +15,8 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173", // local frontend
   "http://localhost:3000", // alternative local frontend
-  "https://hr-onboarding-document-generator.vercel.app" // production frontend
+  "https://hr-onboarding-document-generator.vercel.app",
+  "https://hr-onboarding-document-generator.vercel.app/"// production frontend
 ];
 
 app.use(cors({
