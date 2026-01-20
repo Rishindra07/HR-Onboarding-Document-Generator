@@ -11,26 +11,10 @@ dotenv.config();
 
 const app = express();
 
-// Middlewares
-const allowedOrigins = [
-  "http://localhost:5173", // local frontend
-  "http://localhost:3000", // alternative local frontend
-  "https://hr-onboarding-document-generator.vercel.app",
-  "https://hr-onboarding-document-generator.vercel.app/"// production frontend
-];
-
+// CORS middleware - Allow all origins
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (mobile apps, Postman, curl)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.log("⚠️ CORS request from:", origin);
-      // Allow all origins for now
-      callback(null, true);
-    }
-  },
-  credentials: true,
+  origin: "*", // Allow all origins
+  credentials: false,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
