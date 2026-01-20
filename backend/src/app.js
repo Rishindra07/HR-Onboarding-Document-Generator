@@ -13,8 +13,16 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: "*"
+  origin: [
+    "http://localhost:5173",
+    "https://hr-onboarding-document-generator.vercel.app"
+  ],
+  methods: "GET,POST,PUT,DELETE,OPTIONS",
+  allowedHeaders: "Content-Type,Authorization"
 }));
+
+app.options("*", cors());
+
 app.use(express.json()); // parse JSON bodies
 
 app.use("/generated", express.static(path.join(process.cwd(), "generated")));
