@@ -57,11 +57,12 @@ router.post("/", async (req, res) => {
       generatedContent: mergedContent,
       pdfPath
     });
+    const publicPath = `/generated/${pdfFilename}`;
 
     return res.json({
       success: true,
       preview: mergedContent,
-      pdfPath,
+      pdfPath: publicPath,
       historyId: history._id
     });
 

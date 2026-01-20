@@ -6,7 +6,7 @@ import {connectDB} from "./config/db.js";
 import templateRoutes from "./routes/templateRoute.js";
 import clauseRoutes from "./routes/clauseRoutes.js";
 import generateRoute from "./routes/generateRoute.js";
-
+import path from "path";
 dotenv.config();
 
 const app = express();
@@ -14,6 +14,8 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(express.json()); // parse JSON bodies
+
+app.use("/generated", express.static(path.join(process.cwd(), "generated")));
 
 // Connect to MongoDB
 connectDB();
