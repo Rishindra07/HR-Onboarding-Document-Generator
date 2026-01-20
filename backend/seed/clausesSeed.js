@@ -1,54 +1,38 @@
 import mongoose from "mongoose";
-import Clause from "../src/models/Clause.js"; // adjust path if needed
+import dotenv from "dotenv";
+import Clause from "../src/models/Clause.js";
 
-// Update with your DB connection URL if different
+dotenv.config(); // Load env vars
+
 const MONGO_URI = process.env.MONGO_URI;
 
 async function seedClauses() {
   try {
+    if (!MONGO_URI) {
+      console.error("❌ MONGO_URI is undefined. Make sure .env exists and seed is run from backend root.");
+      return;
+    }
+
     await mongoose.connect(MONGO_URI);
-    console.log("MongoDB Connected ✔");
+    console.log(`✔ Connected to DB: ${mongoose.connection.name}`);
 
-    // Clear existing clauses (optional)
     await Clause.deleteMany({});
-    console.log("Old clauses removed ✔");
+    console.log("✔ Old clauses removed");
 
-    const clauses = [
-      {
-        title: "Leave Policy",
-        type: "policy",
-        body: "Employees are entitled to 20 days of paid leave annually, subject to manager approval."
-      },
-      {
-        title: "Working Hours",
-        type: "policy",
-        body: "Standard working hours are from 9 AM to 6 PM, Monday to Friday, with a 1-hour lunch break."
-      },
-      {
-        title: "Health Benefits",
-        type: "benefit",
-        body: "The company provides full health insurance coverage starting from the employee's date of joining."
-      },
-      {
-        title: "Work From Home Guidelines",
-        type: "policy",
-        body: "Employees may work from home two days a week, depending on role requirements and management approval."
-      },
-      {
-        title: "Team Introduction",
-        type: "team_intro",
-        body: "You will be joining the Engineering Team, led by Mr. Ramesh Kumar, who will assist with your onboarding."
-      }
-    ];
+    await Clause.insertMany([
+      { title: "Leave Policy", type: "policy", body: "Employees are entitled to paid leaves." },
+      { title: "Working Hours", type: "policy", body: "9 AM - 6 PM, Monday to Friday." },
+      { title: "Health Benefits", type: "benefit", body: "Full medical coverage from date of joining." },
+      { title: "Team Introduction", type: "team_intro", body: "You will join the Engineering Team." }
+    ]);
 
-    await Clause.insertMany(clauses);
-    console.log("Clauses Seeded Successfully ✔");
+    console.log("✔ Clauses Seeded Successfully");
 
-  } catch (error) {
-    console.error("Seeding Error:", error);
+  } catch (err) {
+    console.error("❌ Seeding Error:", err.message);
   } finally {
-    mongoose.connection.close();
-    console.log("MongoDB connection closed ✔");
+    await mongoose.disconnect();
+    console.log("✔ DB Disconnected");
   }
 }
 
