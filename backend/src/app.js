@@ -13,8 +13,8 @@ const app = express();
 
 // Middlewares
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://hr-onboarding-document-generator.vercel.app"
+  "http://localhost:5173", // local frontend
+  "https://hr-onboarding-document-generator.vercel.app" // production frontend
 ];
 
 app.use(cors({
@@ -22,9 +22,11 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("CORS blocked: " + origin));
+      console.log("❌ CORS blocked:", origin);
+      callback(new Error("CORS blocked"));
     }
   },
+  credentials: true,
   methods: "GET,POST,PUT,DELETE,OPTIONS",
   allowedHeaders: "Content-Type,Authorization"
 }));
