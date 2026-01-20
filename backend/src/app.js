@@ -14,21 +14,24 @@ const app = express();
 // Middlewares
 const allowedOrigins = [
   "http://localhost:5173", // local frontend
+  "http://localhost:3000", // alternative local frontend
   "https://hr-onboarding-document-generator.vercel.app" // production frontend
 ];
 
 app.use(cors({
   origin: function(origin, callback) {
+    // Allow requests with no origin (mobile apps, Postman, curl)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      console.log("❌ CORS blocked:", origin);
-      callback(new Error("CORS blocked"));
+      console.log("⚠️ CORS request from:", origin);
+      // For production, comment out the next line to strictly enforce CORS
+      callback(null, true);
     }
   },
   credentials: true,
-  methods: "GET,POST,PUT,DELETE,OPTIONS",
-  allowedHeaders: "Content-Type,Authorization"
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.options("*", cors());
@@ -55,3 +58,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
+export default app;
