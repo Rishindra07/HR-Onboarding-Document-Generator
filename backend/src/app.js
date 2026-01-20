@@ -12,7 +12,9 @@ dotenv.config();
 const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(cors({
+  origin: "*"
+}));
 app.use(express.json()); // parse JSON bodies
 
 app.use("/generated", express.static(path.join(process.cwd(), "generated")));
