@@ -1,22 +1,14 @@
-import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+const apiKey = process.env.GOOGLE_API_KEY;
+const genAI = new GoogleGenerativeAI(apiKey);
 
-/**
- * Generates a merged, formatted onboarding document using AI.
- * 
- * @param {Object} data
- * @param {String} data.employeeName
- * @param {String} data.employeeEmail
- * @param {Array} data.clauses  // [{ title, type, body }]
- * 
- * @returns {String} formatted merged content
- */
+// Use a valid model ID here (e.g., gemini-2.5-flash)
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
 export const generateMergedContent = async ({ employeeName, employeeEmail, clauses }) => {
   const systemPrompt = `
 You are an expert HR document writer. Format onboarding documents professionally with:
@@ -28,7 +20,6 @@ You are an expert HR document writer. Format onboarding documents professionally
 - Do not include markup or JSON, only plain formatted text
   `.trim();
 
-  // Build clause text for the model
   const clausesText = clauses
     .map(c => `### ${c.title.toUpperCase()}\n${c.body}`)
     .join("\n\n");
@@ -46,14 +37,8 @@ ${clausesText}
 Output should be final, clean, and structured.
   `.trim();
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-4.1",
-    messages: [
-      { role: "system", content: systemPrompt },
-      { role: "user", content: userPrompt }
-    ],
-    temperature: 0.3
-  });
+  const prompt = `${systemPrompt}\n\n${userPrompt}`;
 
-  return response.choices[0].message.content;
+  const result = await model.generateContent(prompt);
+  return result.response.text();
 };
