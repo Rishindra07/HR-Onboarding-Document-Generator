@@ -12,12 +12,7 @@ dotenv.config();
 const app = express();
 
 // CORS middleware - Allow all origins
-app.use(cors({
-  origin: "*", // Allow all origins
-  credentials: false,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+app.use(cors());
 
 app.options("*", cors());
 
