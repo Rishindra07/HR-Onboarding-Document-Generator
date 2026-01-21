@@ -8,7 +8,6 @@ export default function ClauseSelector({ selected, setSelected }) {
     try {
       const res = async () => {
         const data = await api.get("/")
-        console.log(data)
       }
       res();
       api.get("api/clauses").then(res => setClauses(res.data));
