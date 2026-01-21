@@ -138,3 +138,10 @@ body {
 .download-link:hover {
   background-color: #218838;
 }
+
+.error-message {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
