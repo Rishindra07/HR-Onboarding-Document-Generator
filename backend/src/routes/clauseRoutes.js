@@ -17,7 +17,6 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const clauses = await Clause.find();
-    console.log(clauses)
     res.json(clauses);
   } catch (err) {
     res.status(500).json({ error: err.message });

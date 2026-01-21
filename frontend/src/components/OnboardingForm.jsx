@@ -8,8 +8,34 @@ export default function OnboardingForm() {
   const [selectedClauses, setSelectedClauses] = useState([]);
   const [preview, setPreview] = useState("");
   const [pdfPath, setPdfPath] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!employeeName.trim()) {
+      newErrors.employeeName = "Employee name is required";
+    }
+
+    if (!employeeEmail.trim()) {
+      newErrors.employeeEmail = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(employeeEmail)) {
+      newErrors.employeeEmail = "Please enter a valid email address";
+    }
+
+    if (selectedClauses.length === 0) {
+      newErrors.clauses = "Please select at least one clause";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const generate = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
     const payload = {
       employeeName,
       employeeEmail,
@@ -32,6 +58,7 @@ export default function OnboardingForm() {
         value={employeeName}
         onChange={e => setEmployeeName(e.target.value)}
       />
+      {errors.employeeName && <p className="error-message">{errors.employeeName}</p>}
 
       <input
         type="email"
@@ -40,8 +67,10 @@ export default function OnboardingForm() {
         value={employeeEmail}
         onChange={e => setEmployeeEmail(e.target.value)}
       />
+      {errors.employeeEmail && <p className="error-message">{errors.employeeEmail}</p>}
 
       <ClauseSelector selected={selectedClauses} setSelected={setSelectedClauses} />
+      {errors.clauses && <p className="error-message">{errors.clauses}</p>}
 
       <button
         onClick={generate}

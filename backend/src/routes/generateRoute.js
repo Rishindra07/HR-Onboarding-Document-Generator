@@ -67,7 +67,6 @@ router.post("/", async (req, res) => {
     });
 
   } catch (err) {
-    console.error("❌ Error in /generate:", err);
     res.status(500).json({ error: err.message });
   }
 });

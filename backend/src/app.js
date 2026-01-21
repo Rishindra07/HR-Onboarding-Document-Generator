@@ -23,7 +23,7 @@ app.use("/generated", express.static(path.join(process.cwd(), "generated")));
 
 // Connect to MongoDB (async, doesn't block server startup)
 connectDB().catch(err => {
-  console.error("Failed to connect to MongoDB:", err);
+  // Connection error handled silently
 });
 
 // Health check route
@@ -43,7 +43,6 @@ app.use("/api/generate", generateRoute);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error("❌ Error:", err.message);
   res.status(err.status || 500).json({ 
     error: err.message || "Internal Server Error",
     status: err.status || 500
@@ -58,8 +57,7 @@ app.use((req, res) => {
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📍 Health check: http://localhost:${PORT}/health`);
+  // Server started
 });
 
 export default app;
