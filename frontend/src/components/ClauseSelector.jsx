@@ -5,7 +5,17 @@ export default function ClauseSelector({ selected, setSelected }) {
   const [clauses, setClauses] = useState([]);
 
   useEffect(() => {
-    api.get("/clauses").then(res => setClauses(res.data));
+    try {
+      const res = async () => {
+        const data = await api.get("/")
+        console.log(data)
+      }
+      res();
+      api.get("api/clauses").then(res => setClauses(res.data));
+    } catch (error) {
+      console.log(error)
+    }
+
   }, []);
 
   const toggle = (id) => {

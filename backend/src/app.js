@@ -11,10 +11,10 @@ dotenv.config();
 
 const app = express();
 
-// CORS middleware - Allow all origins
-app.use(cors());
-
-app.options("*", cors());
+// CORS middleware - Allow all origins 
+app.use(cors(
+  "http://localhost:5173"
+));
 
 app.use(express.json()); // parse JSON bodies
 app.use(express.urlencoded({ extended: true }));
