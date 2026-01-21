@@ -16,7 +16,7 @@ export default function OnboardingForm() {
       clauseIds: selectedClauses
     };
 
-    const res = await api.post("/generate", payload);
+    const res = await api.post("api/generate", payload);
     setPreview(res.data.preview);
     setPdfPath(res.data.pdfPath);
   };
