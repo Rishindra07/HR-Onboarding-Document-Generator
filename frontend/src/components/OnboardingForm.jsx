@@ -57,7 +57,7 @@ export default function OnboardingForm() {
 
           {pdfPath && (
             <a
-              href={`http://localhost:5000${pdfPath}`}
+              href={`${import.meta.env.VITE_API_BASE_URL}/../..${pdfPath}`}
               download
               target="_blank"
               className="download-link"
